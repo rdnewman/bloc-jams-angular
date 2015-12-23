@@ -38,6 +38,18 @@
       return albumPicasso;
     };
 
+    Fixtures.getCollection = function(numberOfAlbums) {
+      nbrOfAlbums = parseInt(numberOfAlbums);
+      if (nbrOfAlbums < 1) {
+        console.warn('[Fixtures.getCollection] numberOfAlbums is zero or less');
+      }
+      albums = [];
+      for (var i = 0; i < nbrOfAlbums; i++) {
+        albums.push(angular.copy(albumPicasso));
+      }
+      return albums;
+    };
+
     return Fixtures;
   }
 
