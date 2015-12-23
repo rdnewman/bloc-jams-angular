@@ -41,8 +41,7 @@
     Fixtures.getCollection = function(numberOfAlbums) {
       nbrOfAlbums = parseInt(numberOfAlbums);
       if (nbrOfAlbums < 1) {
-        console.error('[Fixtures.getCollection] numberOfAlbums is zero or less');
-        return [];
+        console.warn('[Fixtures.getCollection] numberOfAlbums is zero or less');
       }
       albums = [];
       for (var i = 0; i < nbrOfAlbums; i++) {
