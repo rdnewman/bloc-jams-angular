@@ -40,12 +40,12 @@
 
     Fixtures.getCollection = function(numberOfAlbums) {
       nbrOfAlbums = parseInt(numberOfAlbums);
-      if (numberOfAlbums < 1) {
+      if (nbrOfAlbums < 1) {
         console.error('[Fixtures.getCollection] numberOfAlbums is zero or less');
         return [];
       }
       albums = [];
-      for (var i = 0; i < numberOfAlbums; i++) {
+      for (var i = 0; i < nbrOfAlbums; i++) {
         albums.push(angular.copy(albumPicasso));
       }
       return albums;
