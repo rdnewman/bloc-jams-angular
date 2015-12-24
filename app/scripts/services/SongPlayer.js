@@ -109,6 +109,22 @@
       }
     };
 
+    /**
+    * @function next
+    * @desc Selects the song after the current one, based on the album's song order
+    */
+    SongPlayer.next = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++;
+
+      if (currentSongIndex >= currentAlbum.songs.length) {
+        stopSong();
+      } else {
+        setSong(currentAlbum.songs[currentSongIndex]);
+        playSong();
+      }
+    };
+
     return SongPlayer;
   }
 
