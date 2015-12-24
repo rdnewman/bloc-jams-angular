@@ -33,16 +33,12 @@
 
     /**
     * @function playSong
-    * @desc Plays current Buzz song object and sets song playing marker to true.  Assumes setSong() has been called sometime earlier.
-    * @param {Object} song (optional: currentSong assumed)
+    * @desc Plays current Buzz song object and sets song playing marker to true.  Assumes setSong() had been called sometime earlier.
+    * @param none
     */
     var playSong = function(song) {
       currentBuzzObject.play();
-      if (song) {
-        song.playing = true;
-      } else {
-        currentSong.playing = true;
-      }
+      currentSong.playing = true;
     };
 
     /**
@@ -53,7 +49,7 @@
     SongPlayer.play = function(song) {
       if (song === currentSong) {
         if (currentBuzzObject.isPaused()) {
-          playSong(song);
+          playSong();
         }
       } else {
         setSong(song);
