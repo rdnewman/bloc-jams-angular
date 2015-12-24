@@ -29,6 +29,7 @@
       });
       SongPlayer.currentSong = song;
       SongPlayer.currentSong.artist = currentAlbum.artist;
+      SongPlayer.currentSong.index = currentAlbum.songs.indexOf(song);
     };
 
     /**
@@ -52,15 +53,6 @@
     };
 
     /**
-    * @function getSongIndex
-    * @desc Determines which song number from the album is currently playing.
-    * @param {Object} song
-    */
-    var getSongIndex = function(song) {
-      return currentAlbum.songs.indexOf(song);
-    };
-
-    /**
     * @desc Song that is currently playing
     * @type {Object}
     */
@@ -72,7 +64,7 @@
     * @param {Object} song
     */
     SongPlayer.play = function(song) {
-      song = song || SongPlayer.currentSong;
+      song = song || SongPlayer.currentSong || currentAlbum.songs[0];
       if (song === SongPlayer.currentSong) {
         if (currentBuzzObject.isPaused()) {
           playSong();
@@ -99,7 +91,7 @@
     * @desc Selects the song previous to the current one, based on the album's song order
     */
     SongPlayer.previous = function() {
-      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      var currentSongIndex = SongPlayer.currentSong.index;
       currentSongIndex--;
 
       if (currentSongIndex < 0) {
@@ -115,7 +107,7 @@
     * @desc Selects the song after the current one, based on the album's song order
     */
     SongPlayer.next = function() {
-      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      var currentSongIndex = SongPlayer.currentSong.index;
       currentSongIndex++;
 
       if (currentSongIndex >= currentAlbum.songs.length) {
