@@ -28,6 +28,7 @@
         preload: true
       });
       SongPlayer.currentSong = song;
+      SongPlayer.currentSong.artist = currentAlbum.artist;
     };
 
     /**
@@ -60,7 +61,7 @@
     };
 
     /**
-    * @desc Data for song that is current playing
+    * @desc Song that is currently playing
     * @type {Object}
     */
     SongPlayer.currentSong = null;
