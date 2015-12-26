@@ -22,10 +22,12 @@
         var $seekBar = $(element);
 
         var percentString = function () {
-          var value = scope.value;
-          var max = scope.max;
-          var percent = value / max * 100;
+          var percent = (scope.value / scope.max) * 100;
           return percent + "%";
+        };
+
+        var updateValue = function(event) {
+          scope.value = scope.max * calculatePercent($seekBar, event);
         };
 
         scope.fillStyle = function() {
@@ -33,15 +35,13 @@
         };
 
         scope.onClickSeekBar = function(event) {
-          var percent = calculatePercent($seekBar, event);
-          scope.value = percent * scope.max;
+          updateValue(event);
         };
 
         scope.trackThumb = function() {
           $document.bind('mousemove.thumb', function(event) {
-            var percent = calculatePercent($seekBar, event);
             scope.$apply(function() {
-              scope.value = percent * scope.max;
+              updateValue(event);
             });
           });
 
