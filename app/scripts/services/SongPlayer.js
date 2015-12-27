@@ -15,6 +15,18 @@
     var currentBuzzObject = null;
 
     /**
+    * @desc Default volume for playing songs
+    * @type {Number}
+    */
+    var defaultVolume = 80;
+
+    /**
+    * @desc Previous volume before being muted
+    * @type {Number}
+    */
+    var previousVolume = defaultVolume;
+
+    /**
     * @desc Scope from controller for updating views
     * @type {Object}
     */
@@ -89,7 +101,7 @@
     * @desc Volume for playing song
     * @type {Number}
     */
-    SongPlayer.volume = 80;
+    SongPlayer.volume = defaultVolume;
 
     /**
     * @desc Maximum volume for playing songs
@@ -179,6 +191,38 @@
         currentBuzzObject.setVolume(newVolume);
       }
       SongPlayer.volume = newVolume;
+    };
+
+    /**
+    * @function volumeIconLevel
+    * @desc Determine which volume icon is appropriate
+    */
+    SongPlayer.volumeIconLevel = function() {
+      var volume = SongPlayer.volume;
+      var aThird = SongPlayer.maxVolume / 3.0;
+      switch (true) {
+        case (volume <= 0):
+          return 'mute';
+        case (volume < aThird):
+          return 'low';
+        case (volume < (2 * aThird)):
+          return 'medium';
+        default:
+          return 'high';
+      }
+    };
+
+    /**
+    * @function toggleMute
+    * @desc Toggle volume to zero or last setting or 80 (if last setting = 0)
+    */
+    SongPlayer.toggleMute = function() {
+      if (SongPlayer.volume > 0) {
+        previousVolume = SongPlayer.volume;
+        SongPlayer.setVolume(0);
+      } else {
+        SongPlayer.setVolume(previousVolume);
+      }
     };
 
     /**
