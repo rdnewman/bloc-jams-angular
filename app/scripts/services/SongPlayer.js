@@ -1,5 +1,5 @@
 (function() {
-  function SongPlayer($rootScope, Utility, Fixtures) {
+  function SongPlayer(Utility, Fixtures) {
     var SongPlayer = {};
 
     /**
@@ -13,6 +13,12 @@
     * @type {Object}
     */
     var currentBuzzObject = null;
+
+    /**
+    * @desc Scope from controller for updating views
+    * @type {Object}
+    */
+    var controllerScope = null;
 
     /**
     * @function setSong
@@ -29,11 +35,13 @@
         preload: true
       });
 
-      currentBuzzObject.bind('timeupdate', function() {
-        $rootScope.$apply(function() {
-          SongPlayer.currentTime = currentBuzzObject.getTime();
+      if (controllerScope) {
+        currentBuzzObject.bind('timeupdate', function() {
+          controllerScope.$apply(function() {    // TODO: is there a way to support more than one scope at a time?
+            SongPlayer.currentTime = currentBuzzObject.getTime();
+          });
         });
-      });
+      }
 
       SongPlayer.currentSong = song;
       SongPlayer.currentSong.artist = currentAlbum.artist;
@@ -167,10 +175,19 @@
       }
     };
 
+    /**
+    * @function registerScope
+    * @desc Register a view scope for display updates.  Only one scope is recognized at a time.
+    * @param {Object} scope
+    */
+    SongPlayer.registerScope = function(scope) {
+      controllerScope = scope;
+    };
+
     return SongPlayer;
   }
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['$rootScope', 'Utility', 'Fixtures', SongPlayer]);
+    .factory('SongPlayer', ['Utility', 'Fixtures', SongPlayer]);
  })();
