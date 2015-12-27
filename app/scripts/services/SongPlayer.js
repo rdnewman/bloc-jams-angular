@@ -1,5 +1,5 @@
 (function() {
-  function SongPlayer($rootScope, Fixtures) {
+  function SongPlayer($rootScope, Utility, Fixtures) {
     var SongPlayer = {};
 
     /**
@@ -73,6 +73,18 @@
     SongPlayer.currentTime = null;
 
     /**
+    * @desc Volume for playing song
+    * @type {Number}
+    */
+    SongPlayer.volume = 80;
+
+    /**
+    * @desc Maximum volume for playing songs
+    * @type {Number}
+    */
+    SongPlayer.maxVolume = 100;
+
+    /**
     * @function play
     * @desc Starts playing a song if not already playing and sets currentSong
     * @param {Object} song
@@ -143,10 +155,22 @@
       }
     };
 
+    /**
+    * @function setVolume
+    * @desc Set volume for playing songs
+    * @param {Number} volume
+    */
+    SongPlayer.setVolume = function(volume) {
+      if (currentBuzzObject) {
+        var newVolume = Utility.valBetween(volume, 0, SongPlayer.maxVolume);
+        currentBuzzObject.setVolume(newVolume);
+      }
+    };
+
     return SongPlayer;
   }
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
+    .factory('SongPlayer', ['$rootScope', 'Utility', 'Fixtures', SongPlayer]);
  })();
