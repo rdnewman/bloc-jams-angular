@@ -35,12 +35,8 @@
 
         var updateValue = function(event) {
           scope.value = scope.max * calculatePercent($seekBar, event);
-          notifyOnChange(scope.value);
-        };
-
-        var notifyOnChange = function(newValue) {
           if (typeof scope.onChange === 'function') {
-            scope.onChange({value: newValue});
+            scope.onChange({value: scope.value});
           }
         };
 
