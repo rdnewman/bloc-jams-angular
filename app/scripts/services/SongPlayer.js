@@ -34,6 +34,7 @@
         formats: ['mp3'],
         preload: true
       });
+      currentBuzzObject.setVolume(SongPlayer.volume);
 
       if (controllerScope) {
         currentBuzzObject.bind('timeupdate', function() {
@@ -169,10 +170,11 @@
     * @param {Number} volume
     */
     SongPlayer.setVolume = function(volume) {
+      var newVolume = Utility.valBetween(volume, 0, SongPlayer.maxVolume);
       if (currentBuzzObject) {
-        var newVolume = Utility.valBetween(volume, 0, SongPlayer.maxVolume);
         currentBuzzObject.setVolume(newVolume);
       }
+      SongPlayer.volume = newVolume;
     };
 
     /**
