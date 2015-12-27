@@ -1,13 +1,10 @@
 (function() {
-  function seekBar($document) {
-    var valBetween = function(value, min, max) {
-      return (value > min) ? ((value < max) ? value : max) : min;
-    };
+  function seekBar($document, Utility) {
 
     var calculatePercent = function($seekBar, event) {
       var offset = event.pageX - $seekBar.offset().left;
       var width = $seekBar.width();
-      return valBetween((offset / width), 0, 1);
+      return Utility.valBetween((offset / width), 0, 1);
     };
 
     return {
@@ -38,12 +35,8 @@
 
         var updateValue = function(event) {
           scope.value = scope.max * calculatePercent($seekBar, event);
-          notifyOnChange(scope.value);
-        };
-
-        var notifyOnChange = function(newValue) {
           if (typeof scope.onChange === 'function') {
-            scope.onChange({value: newValue});
+            scope.onChange({value: scope.value});
           }
         };
 
@@ -78,5 +71,5 @@
 
   angular
     .module('blocJams')
-    .directive('seekBar', ['$document', seekBar]);
+    .directive('seekBar', ['$document', 'Utility', seekBar]);
 })();
