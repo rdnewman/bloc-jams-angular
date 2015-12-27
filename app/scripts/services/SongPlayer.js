@@ -1,5 +1,5 @@
 (function() {
-  function SongPlayer($rootScope, Utility, Fixtures) {
+  function SongPlayer(Utility, Fixtures) {
     var SongPlayer = {};
 
     /**
@@ -15,6 +15,12 @@
     var currentBuzzObject = null;
 
     /**
+    * @desc Scope from controller for updating views
+    * @type {Object}
+    */
+    var controllerScope = null;
+
+    /**
     * @function setSong
     * @desc Stops currently playing song and loads new audio file as currentBuzzObject
     * @param {Object} song
@@ -28,12 +34,15 @@
         formats: ['mp3'],
         preload: true
       });
+      currentBuzzObject.setVolume(SongPlayer.volume);
 
-      currentBuzzObject.bind('timeupdate', function() {
-        $rootScope.$apply(function() {
-          SongPlayer.currentTime = currentBuzzObject.getTime();
+      if (controllerScope) {
+        currentBuzzObject.bind('timeupdate', function() {
+          controllerScope.$apply(function() {    // TODO: is there a way to support more than one scope at a time?
+            SongPlayer.currentTime = currentBuzzObject.getTime();
+          });
         });
-      });
+      }
 
       SongPlayer.currentSong = song;
       SongPlayer.currentSong.artist = currentAlbum.artist;
@@ -161,10 +170,20 @@
     * @param {Number} volume
     */
     SongPlayer.setVolume = function(volume) {
+      var newVolume = Utility.valBetween(volume, 0, SongPlayer.maxVolume);
       if (currentBuzzObject) {
-        var newVolume = Utility.valBetween(volume, 0, SongPlayer.maxVolume);
         currentBuzzObject.setVolume(newVolume);
       }
+      SongPlayer.volume = newVolume;
+    };
+
+    /**
+    * @function registerScope
+    * @desc Register a view scope for display updates.  Only one scope is recognized at a time.
+    * @param {Object} scope
+    */
+    SongPlayer.registerScope = function(scope) {
+      controllerScope = scope;
     };
 
     return SongPlayer;
@@ -172,5 +191,5 @@
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['$rootScope', 'Utility', 'Fixtures', SongPlayer]);
+    .factory('SongPlayer', ['Utility', 'Fixtures', SongPlayer]);
  })();
