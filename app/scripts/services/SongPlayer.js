@@ -44,6 +44,10 @@
         });
       }
 
+      currentBuzzObject.bind('ended', function() {
+        SongPlayer.next();
+      });
+
       SongPlayer.currentSong = song;
       SongPlayer.currentSong.artist = currentAlbum.artist;
       SongPlayer.currentSong.index = currentAlbum.songs.indexOf(song);
